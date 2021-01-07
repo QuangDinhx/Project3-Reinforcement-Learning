@@ -190,7 +190,14 @@ class ApproximateQAgent(PacmanQAgent):
           where * is the dotProduct operator
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        featureVector = self.featExtractor.getFeatures(state,action)
+        qvalue = 0
+        # for every feature that we extracted for the state and action
+        # corresponding weight should be extracted to return the qvalue
+        # of a state, which is summation(f_i(s,a)*w_i)
+        for k in featureVector.keys():
+          qvalue = qvalue + self.weights[k] * featureVector[k]
+        return qvalue
 
     def update(self, state, action, nextState, reward):
         """

@@ -45,11 +45,16 @@ class ValueIterationAgent(ValueEstimationAgent):
 
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
+        # Value iteration loop set up for self.iterations iterations
         for i in range(iterations):
+          #intializing a temporary counter to store an iteration's value for each state.
           iterationValues = util.Counter()
+          #looking at each state
           for s in self.mdp.getStates():
+            # if the state is terminal, the reward is the exit reward and no discounted rewards as it is the absorbing state
             if self.mdp.isTerminal(s):
               self.values[s] = self.mdp.getReward(s, 'exit', '')
+            # if the state is non-terminal, then finding the best value as the maximum of expected sum of rewards of different actions.
             else:
               actions = self.mdp.getPossibleActions(s)
               iterationValues[s] = max([self.computeQValueFromValues(s, a) for a in actions])
@@ -91,7 +96,11 @@ class ValueIterationAgent(ValueEstimationAgent):
           terminal state, you should return None.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        stateAction = util.Counter()
+        for a in self.mdp.getPossibleActions(state):
+          stateAction[a] = self.computeQValueFromValues(state,a)
+        policy = stateAction.argMax()
+        return policy
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
